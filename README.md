@@ -239,7 +239,7 @@ We've also configured wireguard on the peer and generated a key pair. The privat
 
 ### Creating a third state file for copying the last keys
 
-First I went to the `wg0.conf` on the peer, since the private key was on the last line in the configuration. I moved the key to the correct line in the configuration.
+First I went to the `wg0.conf` on the peer, since the private key was on the last line in the configuration. I moved the key to the correct line.
 
 ![image](https://github.com/user-attachments/assets/9ec69f60-4a8a-469c-a55f-9a39813d0778)
 <br></br>
@@ -249,7 +249,11 @@ Then I created a new folder for the third and (hopefully) last module
 ![image](https://github.com/user-attachments/assets/a815d4ed-73cd-4383-942d-d96526f68bf4)
 <br></br>
 
-And a new state file, which included the following states
+And a new state file, which had the following states:
+
+1. Copy generated public key from peer to server
+2. Add the peer's public key and allowed IP's to wg0
+3. 
 
 
 
