@@ -255,7 +255,7 @@ And a new state file, which had the following states:
 2. Add the peer's public key and allowed IP's to wg0
 3. 
 
-
+NEST STEPS: wg0 not going up because private key needs to be fixed in wg0.conf
 
 
 
