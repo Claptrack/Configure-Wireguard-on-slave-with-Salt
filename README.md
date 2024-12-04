@@ -298,7 +298,7 @@ Idempotency achieved!
 
 ### Copying the public key of the server to peer manually
 
-First, I outputted the public key from the server, and copied the key to the configuration 
+First, I output the public key from the server, and copied the key to the configuration 
 
 
 ![image](https://github.com/user-attachments/assets/d6112757-0a63-424a-9033-638cc675359f)
@@ -307,10 +307,78 @@ First, I outputted the public key from the server, and copied the key to the con
     $ sudo micro /etc/wireguard/wg0.conf
 <br></br>
 
-Then I proceeded to 
+I tried activating wireguard, but got an error regarding the last line in the config. Endpoint was supposed to be configured if we wanted all traffic to be routed via the server.
+
+![image](https://github.com/user-attachments/assets/63f3f2a5-6d3d-4357-a0ba-0a1c8600dfe7)
+<br></br>
+
+After removing the last line I got a success. Also `sudo wg` showed me, that interface `wg0` was up and running.
+
+![image](https://github.com/user-attachments/assets/20882091-0cb9-43d1-9f18-4ffd0d2f583b)
+<br></br>
+
+I tried pinging the server, but that didn't work. There is still some troubleshooting to be done before this works 100 %.
+<br></br>
+
+### Making a top file
+
+To make this as quick and automated as possible, I decided to create a top.sls to run all these state files.
+
+![image](https://github.com/user-attachments/assets/19f5a142-1cf3-4315-a89f-8cdc34e7afb8)
+<br></br>
+
+Trying that out revealed some errors, the states should be unique between modules, so I went ahead and fixed them.
+
+![image](https://github.com/user-attachments/assets/a490e055-b172-45d7-a0f6-56dc2c0a8c3d)
+<br></br>
+
+That was a success.
+
+![image](https://github.com/user-attachments/assets/2c0bc37b-2302-4899-8956-affa480fbc76)
+<br></br>
+
+However, I would still need to make sure this works with a "clean install", so I went ahead and removed all wireguard packages, as well as configuration files and keys from both the master and the slave.
+
+First the slave
+
+    $ sudo apt-get -y purge wireguard
+    $ sudo apt-get -y autoremove
+    $ sudo rm /etc/wireguard/wg0.conf | sudo rm /etc/wireguard/private.key | sudo rm /etc/wireguard/public.key
+
+![image](https://github.com/user-attachments/assets/3bf9d116-6870-4ac5-b873-f3210bf232d1)
+
+![image](https://github.com/user-attachments/assets/7a4597c3-7abe-4226-9120-9729f94793c5)
+<br></br>
+
+
+Then the master
+
+![image](https://github.com/user-attachments/assets/eb1a745d-0ce2-45cb-9111-29e28fb56622)
+<br></br>
+
+Let's try applying the states with the top file.
+
+![image](https://github.com/user-attachments/assets/5d7899b0-5900-407a-9c42-09cc7eef4c1c)
+<br></br>
+
+There was an issue with the service.running for the peer, which I noticed earlier also. 
+
+![image](https://github.com/user-attachments/assets/40e5ad67-dd58-427c-9cdc-a4b5dbbf12be)
+<br></br>
+
+Another run does not fix the issue. I will have to fix this later.
+
+In any case, the rest of the states were all applied, and they were idempotent
+
+![image](https://github.com/user-attachments/assets/ff431d35-f590-408a-b7c5-f1f03f52d80e)
+<br></br>
+
 
 # References
 
 How to set up Wireguard on Debian 12, DigitalOcean: https://www.digitalocean.com/community/tutorials/how-to-set-up-wireguard-on-debian-11
 
+Karvinen 2021: [Two Machine Virtual Network With Debian 11 Bullseye and Vagrant](https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/)
+
+Karvinen 2018: [Salt Quickstart – Salt Stack Master and Slave on Ubuntu Linux](https://terokarvinen.com/2018/salt-quickstart-salt-stack-master-and-slave-on-ubuntu-linux/?fromSearch=salt%20quickstart%20salt%20stack%20master%20and%20slave%20on%20ubuntu%20linux)
 
