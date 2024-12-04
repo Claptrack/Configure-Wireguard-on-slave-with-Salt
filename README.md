@@ -18,8 +18,16 @@ This was done on a Lenovo L14 with AMD Ryzen, 256 GB SSD and 24 GB RAM running D
 
 ## Quick walkthrough of the steps
 
-Download files
-
+1. Download files from `/wireguard` and move the files to the correct folder on your master.
+(Steps 2-6 only if using Vagrant and VirtualBox)
+2. Install Vagrant on your master host
+3. Install VirtualBox on your host (virtualbox-7.0 used in this, 7.1 introduced some issues with Vagrant)
+4. Download the Vagrantfile from `/vagrant`and move it to a folder in your home directory
+5. Navigate to the directory with the Vagrantfile and use command `vagrant up`. In a few minutes you should have a master and slave.
+6. Connect to your master with command `vagrant ssh master`
+Continue from here
+7. Install salt-master on your master host (VPN peer) and salt-minion on your slave (VPN server)
+8. 
 
 
 ## Vagrantfile for two virtual hosts
@@ -328,6 +336,9 @@ I tried pinging the server, but that didn't work. There is still some troublesho
 <br></br>
 
 ## Making a top file
+
+***PLEASE DISREGARD THIS PART, ONE OF THE STATE FILES NEEDS TO BE APPLIED LOCALLY***
+<br></br>
 
 To make this as quick and automated as possible, I decided to create a top.sls to run all these state files.
 
