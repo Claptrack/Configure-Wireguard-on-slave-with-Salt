@@ -32,9 +32,10 @@ This was done on a Lenovo L14 with AMD Ryzen, 256 GB SSD and 24 GB RAM running D
 
 7. Install salt-master on your master host (VPN peer) and salt-minion on your slave (VPN server)
 8. Apply first state `sudo salt '*' state.apply wg_install`
-9. Apply second state locally (you should have salt-call installed by default at this point) `sudo salt-call --local state.apply wg_local`
-10. Apply third state `sudo salt '*' state.apply wg_last`
-11. At this point you should have a wireguard interface `wg0` running with IPv4 address of 10.8.0.1 assigned to the server and 10.8.0.2 assigned for the peer.
+9. Navigate to your slave (VPN server) config file in /etc/wireguard/wg0.conf and move the recently copied private key on the correct row
+10. Apply second state locally (you should have salt-call installed by default at this point) `sudo salt-call --local state.apply wg_local`
+11. Apply third state `sudo salt '*' state.apply wg_last`
+12. At this point you should have a wireguard interface `wg0` running with IPv4 address of 10.8.0.1 assigned to the server and 10.8.0.2 assigned for the peer.
 
 Disclaimer: The end result is only validated by checking the status of the interface with `sudo wg`. There seems to be some issues still with actually being able to connect to the server via the VPN tunnel. 
 
