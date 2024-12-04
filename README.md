@@ -327,7 +327,7 @@ After removing the last line I got a success. Also `sudo wg` showed me, that int
 I tried pinging the server, but that didn't work. There is still some troubleshooting to be done before this works 100 %.
 <br></br>
 
-### Making a top file
+## Making a top file
 
 To make this as quick and automated as possible, I decided to create a top.sls to run all these state files.
 
