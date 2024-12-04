@@ -22,7 +22,7 @@ change-permissions-local:
     cmd.run:
       - name: sudo chmod go= /etc/wireguard/private.key
       - onchanges:
-        - cmd: generate-private-key
+        - cmd: generate-private-key-local
 
 #generate publickey based on privatekey if file public.key does not exist
 generate-public-key-local:
@@ -35,7 +35,7 @@ copy-private-key-local:
     cmd.run:
       - name: sudo cat /etc/wireguard/private.key >> /etc/wireguard/wg0.conf
       - onchanges:
-        - cmd: generate-public-key
+        - cmd: generate-public-key-local
 
 #start service/create VPN tunnel with interface wg0
 start-service-local:
