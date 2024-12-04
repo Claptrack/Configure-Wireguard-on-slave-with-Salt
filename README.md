@@ -15,6 +15,13 @@ The goal was to "automate" the configuration on both the master and the slave as
 This was done on a Lenovo L14 with AMD Ryzen, 256 GB SSD and 24 GB RAM running Debian 12. Software used: Vagrant, VirtualBox, Salt. All these should work with any amd64 architecture Win/Mac/Linux.
 <br></br>
 
+
+## Quick walkthrough of the steps
+
+Download files
+
+
+
 ## Vagrantfile for two virtual hosts
 
 ### Creating the VM's with Vagrantfile
