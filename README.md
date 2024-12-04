@@ -19,17 +19,27 @@ This was done on a Lenovo L14 with AMD Ryzen, 256 GB SSD and 24 GB RAM running D
 ## Quick walkthrough of the steps
 
 1. Download files from `/wireguard` and move the files to the correct folder on your master.
+   
 (Steps 2-6 only if using Vagrant and VirtualBox)
+
 2. Install Vagrant on your master host
 3. Install VirtualBox on your host (virtualbox-7.0 used in this, 7.1 introduced some issues with Vagrant)
 4. Download the Vagrantfile from `/vagrant`and move it to a folder in your home directory
 5. Navigate to the directory with the Vagrantfile and use command `vagrant up`. In a few minutes you should have a master and slave.
 6. Connect to your master with command `vagrant ssh master`
-Continue from here
+   
+(Continue from here without Vagrant and VirtualBox)
+
 7. Install salt-master on your master host (VPN peer) and salt-minion on your slave (VPN server)
 8. Apply first state `sudo salt '*' state.apply wg_install`
-9. Apply second state locally (you should have salt-call installed by default at this point) `sudo salt-call --local wg_local `
+9. Apply second state locally (you should have salt-call installed by default at this point) `sudo salt-call --local state.apply wg_local`
+10. Apply third state `sudo salt '*' state.apply wg_last`
+11. At this point you should have a wireguard interface `wg0` running with IPv4 address of 10.8.0.1 assigned to the server and 10.8.0.2 assigned for the peer.
 
+Disclaimer: The end result is only validated by checking the status of the interface with `sudo wg`. There seems to be some issues still with actually being able to connect to the server via the VPN tunnel. 
+
+
+# Report of the whole process below
 
 ## Vagrantfile for two virtual hosts
 
