@@ -38,7 +38,9 @@ This was done on a Lenovo L14 with AMD Ryzen, 256 GB SSD and 24 GB RAM running D
 12. Apply third state `sudo salt '*' state.apply wg_last`
 13. At this point you should have a wireguard interface `wg0` running with IPv4 address of 10.8.0.1 assigned to the server and 10.8.0.2 assigned for the peer.
 
-Disclaimer: The end result is only validated by checking the status of the interface with `sudo wg`. There seems to be some issues still with actually being able to connect to the server via the VPN tunnel. 
+Disclaimer: The end result is only validated by checking the status of the interface with `sudo wg`. There seems to be some issues still with actually being able to connect to the server via the VPN tunnel.
+
+Also, a lot of these manual steps would be avoidable with the correct commands (eg. having to move the keys to the correct rows in the configuration files). Will fix these when able.
 
 
 # Report of the whole process below
