@@ -192,7 +192,7 @@ I was struggling to find a command that would append the private key after a cer
 
 ### Creating a state file and applying it locally
 
-I decided to copy the existing state file to another module which I called `wg_local`. The idea was to use the state file to configure (almost) the same steps on the peer (master), and then just apply the state locally.
+I decided to copy the existing state file to another module which I called `wg_local`. The idea was to use the state file to apply the same steps on the peer (master), and then just apply the state locally.
 
 A few changes were made to the state file:
 
@@ -239,24 +239,62 @@ We've also configured wireguard on the peer and generated a key pair. The privat
 
 ### Creating a third state file for copying the last keys
 
-First I went to the `wg0.conf` on the peer, since the private key was on the last line in the configuration. I moved the key to the correct line.
+The idea here was to create a state file, which would copy the public key of the peer to the server, as well as the public key from the server to the peer. I decided to just have the first step included here, which was copying the public key to the server and "activating" the tunnel for that peer. The last step will be manual at this point.
+
+I started by editing `wg0.conf` on the peer, since the private key, that was appended to the file earlier, needed to be moved to the correct line (I wish I knew the proper command for this!).
 
 ![image](https://github.com/user-attachments/assets/9ec69f60-4a8a-469c-a55f-9a39813d0778)
 <br></br>
 
-Then I created a new folder for the third and (hopefully) last module
+Then I started working on the state file. First step was to copy the public key to the server
 
-![image](https://github.com/user-attachments/assets/a815d4ed-73cd-4383-942d-d96526f68bf4)
+![image](https://github.com/user-attachments/assets/2379a1e1-2e37-486b-a51f-843a7b2df3ed)
 <br></br>
 
-And a new state file, which had the following states:
+Second part was to give the public key as well as the allowed IP-range to the wireguard interface
 
-1. Copy generated public key from peer to server
-2. Add the peer's public key and allowed IP's to wg0
-3. 
+![image](https://github.com/user-attachments/assets/a76ea77b-bc8c-4734-b9d8-841a780d2226)
+<br></br>
 
-NEST STEPS: wg0 not going up because private key needs to be fixed in wg0.conf
+I received an error on the second state when first applying this, saying that the "line PrivateKey=" was unknown. So I had to go to the slave and move the private key to the correct line. After that, the states were applied without error.
 
+![image](https://github.com/user-attachments/assets/48fd45ba-eb84-42ad-bea9-8e4c56ee6eef)
+<br></br>
+
+I also added a line to check that the service was running.
+
+![image](https://github.com/user-attachments/assets/52a1254e-062c-47fd-9e40-07052afe49ef)
+<br></br>
+
+Trying that out revealed an error with the service
+
+![image](https://github.com/user-attachments/assets/dacda534-17f4-4804-af66-afce5158046f)
+<br></br>
+
+Checked the situation with `sudo salt '*' cmd.run 'sudo systemctl status wg-quick@wg0'`
+
+![image](https://github.com/user-attachments/assets/f65ac9d1-ec98-4e5b-8993-73edb10c14eb)
+<br></br>
+
+I decided to stop the interface with `wg-quick`
+
+![image](https://github.com/user-attachments/assets/3d1784a1-1b66-4bc7-aa6d-c9935ac39104)
+<br></br>
+
+And after setting the service up again, the states were all applied without error.
+
+![image](https://github.com/user-attachments/assets/51855b51-ba17-45ed-94ee-8f7074a60b78)
+<br></br>
+
+The second state, however, was not idempotent. So I added a line to only apply this state only, if there was a change in the previous state.
+
+![image](https://github.com/user-attachments/assets/7ac7fa2b-2f20-499c-8e1c-2f627b4b5a77)
+<br></br>
+
+Idempotency achieved
+
+![image](https://github.com/user-attachments/assets/911beabf-7fdd-4ec8-8380-13532794cc87)
+<br></br>
 
 
 
