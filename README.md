@@ -27,7 +27,8 @@ This was done on a Lenovo L14 with AMD Ryzen, 256 GB SSD and 24 GB RAM running D
 6. Connect to your master with command `vagrant ssh master`
 Continue from here
 7. Install salt-master on your master host (VPN peer) and salt-minion on your slave (VPN server)
-8. 
+8. Apply first state `sudo salt '*' state.apply wg_install`
+9. Apply second state locally (you should have salt-call installed by default at this point) `sudo salt-call --local wg_local `
 
 
 ## Vagrantfile for two virtual hosts
