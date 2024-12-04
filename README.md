@@ -291,13 +291,23 @@ The second state, however, was not idempotent. So I added a line to only apply t
 ![image](https://github.com/user-attachments/assets/7ac7fa2b-2f20-499c-8e1c-2f627b4b5a77)
 <br></br>
 
-Idempotency achieved
+Idempotency achieved!
 
 ![image](https://github.com/user-attachments/assets/911beabf-7fdd-4ec8-8380-13532794cc87)
 <br></br>
 
+### Copying the public key of the server to peer manually
+
+First, I outputted the public key from the server, and copied the key to the configuration 
 
 
+![image](https://github.com/user-attachments/assets/d6112757-0a63-424a-9033-638cc675359f)
+<br></br>
+
+    $ sudo micro /etc/wireguard/wg0.conf
+<br></br>
+
+Then I proceeded to 
 
 # References
 
